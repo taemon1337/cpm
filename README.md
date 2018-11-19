@@ -47,11 +47,13 @@ cpm install docker --default
 cpm looks for a .package.yaml file in the base folder of a configured git repo.
 ```yaml
 name: <package-name>
+version: file://VERSION
 build:
   path: ./docker-build
   command: "docker build -it <package-name>"
 volumes:
 - name: local
   path: $HOME/.local/$package
+registry: taemon1337/cpm
 ```
 

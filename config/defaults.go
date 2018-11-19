@@ -7,6 +7,7 @@ import (
 var DefaultPackageManagerConfig = &PackageManagerConfig{
   Version:      "1.0.0",
   Verbose:      "1",
+  StoreType:    "git",
 }
 
 

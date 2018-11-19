@@ -3,8 +3,6 @@ package store
 import (
   "path"
 
-  "github.com/taemon1337/cpm/pkg"
-  "github.com/taemon1337/cpm/config"
   "gopkg.in/src-d/go-git.v4"
 )
 
@@ -12,9 +10,9 @@ type GitStore struct {
   BasePath              string
 }
 
-func (g *GitStore) fetch(p *pkg.Package) (string, error) {
-  repo, err := git.PlainClone(path.Join(g.BasePath, p.Name), false, &git.CloneOptions{
-    URL: p.Repo,
+func (g *GitStore) Fetch(name, url string) (*git.Repository, error) {
+  repo, err := git.PlainClone(path.Join(g.BasePath, name), false, &git.CloneOptions{
+    URL: url,
     RecurseSubmodules: git.DefaultSubmoduleRecursionDepth,
   })
 
@@ -22,7 +20,15 @@ func (g *GitStore) fetch(p *pkg.Package) (string, error) {
     return nil, err
   }
 
-  return repo
+  return repo, nil
+}
+
+func (g *GitStore) Remove(name string) error {
+  return nil
+}
+
+func (g *GitStore) Checkout(name, branch string) error {
+  return nil
 }
 
 func NewGitStore(cfg *StoreConfig) *GitStore {

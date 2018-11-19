@@ -1,15 +1,21 @@
 package store
 
 import (
-
+  "os"
+  "path"
 )
 
-type StoreConfig {
-  Type            string
+var HomeDir = os.Getenv("HOME")
+var DefaultStoreConfig = &StoreConfig{
+  BasePath:   path.Join(HomeDir, ".local", "git"),
 }
 
-func NewStoreConfig(storetype string) *StoreConfig {
+type StoreConfig struct {
+  BasePath        string
+}
+
+func NewStoreConfig(basepath string) *StoreConfig {
   return &StoreConfig{
-    Type:     storetype,
+    BasePath:     basepath,
   }
 }

@@ -1,15 +1,19 @@
 package config
 
+import (
+  "github.com/taemon1337/cpm/store"
+)
+
 type PackageManagerConfig struct {
   Version               string
   Verbose               string
-  StoreType             string
+  StoreConfig           *store.StoreConfig
 }
 
 func NewPackageManagerConfig() *PackageManagerConfig {
   return &PackageManagerConfig{
     Version:            DefaultPackageManagerConfig.Version,
     Verbose:            DefaultPackageManagerConfig.Verbose,
-    StoreType:          DefaultPackageManagerConfig.StoreType,
+    StoreConfig:        store.DefaultStoreConfig,
   }
 }

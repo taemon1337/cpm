@@ -7,7 +7,6 @@ import (
   "github.com/taemon1337/cpm/cmd"
   "github.com/taemon1337/cpm/pkg"
   "github.com/taemon1337/cpm/config"
-  "github.com/taemon1337/cpm/store"
 )
 
 func command(cpm *pkg.ContainerPackageManager, c string, args []string, options *cmd.CommandOptions) pkg.Printable {

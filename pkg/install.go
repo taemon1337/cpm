@@ -6,19 +6,21 @@ import (
   "github.com/taemon1337/cpm/cmd"
 )
 
-func (c *ContainerPackageManager) Install(args []string, opts *cmd.CommandOptions) *Package {
+func (c *ContainerPackageManager) Install(args []string, opts *cmd.CommandOptions) (*Package, error) {
   if len(args) > 0 {
+    var pull = true
     url := args[0]
     name := path.Base(url)
     log.Printf("[INSTALL] %s", url)
 
-    repo, err := c.Store.Fetch(name, url)
+    repo, err := c.Store.Load(name, url, opts.Branch, pull)
 
     if err != nil {
-      log.Fatal("[ERROR] %s", err)
+      log.Printf("Could not clone git repo: %s: %s", url, err)
+      return nil, err
     }
 
-    log.Printf("[REPO] %s", repo)
+    log.Printf("REPO: ", repo)
   }
 
   p := &Package{
@@ -28,6 +30,5 @@ func (c *ContainerPackageManager) Install(args []string, opts *cmd.CommandOption
     Installed: false,
   }
 
-  return p
-
+  return p, nil
 }

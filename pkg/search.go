@@ -4,7 +4,7 @@ import (
   "github.com/taemon1337/cpm/cmd"
 )
 
-func (c *ContainerPackageManager) Search(args []string, opts *cmd.CommandOptions) *PackageList {
+func (c *ContainerPackageManager) Search(args []string, opts *cmd.CommandOptions) (*PackageList, error) {
   p := &Package{
     Name: "cpm",
     Version: "1.0.0",
@@ -18,5 +18,5 @@ func (c *ContainerPackageManager) Search(args []string, opts *cmd.CommandOptions
 
   return &PackageList{
     Packages: packages,
-  }
+  }, nil
 }

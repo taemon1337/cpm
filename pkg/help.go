@@ -11,6 +11,6 @@ func (h *HelpPrintable) Print() {
   fmt.Println("Help Menu: ")
 }
 
-func (c *ContainerPackageManager) Help(args []string, opts *cmd.CommandOptions) *HelpPrintable {
-  return &HelpPrintable{}
+func (c *ContainerPackageManager) Help(args []string, opts *cmd.CommandOptions) (*HelpPrintable, error) {
+  return &HelpPrintable{}, nil
 }

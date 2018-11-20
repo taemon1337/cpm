@@ -14,7 +14,7 @@ type Registry struct {
   Path              string
 }
 
-func (c *ContainerPackageManager) Registry(args []string, opts *cmd.CommandOptions) *PackageList {
+func (c *ContainerPackageManager) Registry(args []string, opts *cmd.CommandOptions) (*PackageList, error) {
   p1 := &Package{
     Name: "cpm",
     Version: "1.0.0",
@@ -36,5 +36,5 @@ func (c *ContainerPackageManager) Registry(args []string, opts *cmd.CommandOptio
 
   return &PackageList{
     Packages: packages,
-  }
+  }, nil
 }

@@ -2,6 +2,7 @@ package main
 
 import (
   "os"
+  "log"
   "flag"
 
   "github.com/taemon1337/cpm/cmd"
@@ -9,7 +10,7 @@ import (
   "github.com/taemon1337/cpm/config"
 )
 
-func command(cpm *pkg.ContainerPackageManager, c string, args []string, options *cmd.CommandOptions) pkg.Printable {
+func command(cpm *pkg.ContainerPackageManager, c string, args []string, options *cmd.CommandOptions) (pkg.Printable, error) {
   switch c {
     case "list":
       return cpm.List(args, options)
@@ -52,7 +53,12 @@ func main() {
   args := flag.Args()
 
   if len(args) > 0 {
-    res := command(cpm, args[0], args[1:], options)
+    res, err := command(cpm, args[0], args[1:], options)
+
+    if err != nil {
+      log.Fatal(err)
+    }
+
     res.Print()
 
     os.Exit(0)

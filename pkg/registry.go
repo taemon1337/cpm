@@ -4,10 +4,6 @@ import (
   "github.com/taemon1337/cpm/cmd"
 )
 
-type RegistryList struct {
-  Registries        []*Registry
-}
-
 type Registry struct {
   Name              string
   Repo              string

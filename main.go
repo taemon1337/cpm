@@ -12,6 +12,8 @@ import (
 
 func command(cpm *pkg.ContainerPackageManager, c string, args []string, options *cmd.CommandOptions) (pkg.Printable, error) {
   switch c {
+    case "config":
+      return cpm.Config(args, options)
     case "list":
       return cpm.List(args, options)
     case "search":
@@ -40,15 +42,23 @@ func command(cpm *pkg.ContainerPackageManager, c string, args []string, options 
 }
 
 func main() {
-  cfg := config.NewPackageManagerConfig()
   defaults := cmd.DefaultCommandOptions
   options := cmd.NewCommandOptions()
 
   verbose := flag.String("verbose", defaults.Verbose, "Set the verbosity level (1-5)")
+  branch := flag.String("branch", defaults.Branch, "Set the branch of the git repo")
+  configfile := flag.String("config", defaults.ConfigFile, "Set a custom config file to use")
   flag.Parse()
 
-  cfg.Verbose = *verbose
+  options.Branch = *branch
+  options.ConfigFile = *configfile
 
+  cfg, err := config.LoadPackageManagerConfig(options.ConfigFile)
+  if err != nil {
+    log.Fatal("Could not load or initialize package manager config: %s", err)
+  }
+
+  cfg.Verbose = *verbose
   cpm := pkg.NewContainerPackageManager(cfg)
   args := flag.Args()
 

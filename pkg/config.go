@@ -1,32 +1,35 @@
 package pkg
 
 import (
+  "fmt"
+  "errors"
+
+  "github.com/taemon1337/cpm/cmd"
+  "github.com/taemon1337/cpm/config"
 )
 
-type PackageBuild struct {
-  Dockerfile          string              `yaml:"dockerfile"`
-  GitPath             string              `yaml:"gitpath"`
-  BuildArgs           []string            `yaml:"build_args"`
-}
+func (c *ContainerPackageManager) Config(args []string, opts *cmd.CommandOptions) (cfg *config.PackageManagerConfig, err error) {
+  if len(args) < 1 {
+    return nil, errors.New(fmt.Sprintf("Invalid Arguments: %s", args))
+  }
 
-type PackageVolume struct {
-  HostPath            string              `yaml:"hostpath"`
-  Path                string              `yaml:"path"`
-}
+  cfg, err = config.LoadPackageManagerConfig(opts.ConfigFile)
+  if err != nil {
+    return cfg, err
+  }
 
-type PackageConfig struct {
-  Name                string              `yaml:"name"`
-  Version             string              `yaml:"version"`
-  Registry            string              `yaml:"registry"`
-  Build               PackageBuild        `yaml:"build"`
-  CapAdd              []string            `yaml:"cap_add"`
-  CapDrop             []string            `yaml:"cap_drop"`
-  Privileged          bool                `yaml:"privileged"`
-  Volumes             []PackageVolume     `yaml:"volumes"`
-  Devices             []string            `yaml:"devices"`
-  Network             string              `yaml:"network"`
-  Ports               []string            `yaml:"ports"`
-  Pid                 string              `yaml:"pid"`
-  Restart             string              `yaml:"restart"`
+  switch args[0] {
+    case "init":
+      _, err := cfg.Save(opts.ConfigFile)
+      if err != nil {
+        return cfg, err
+      }
+    case "reset":
+      _, err := cfg.Reset(opts.ConfigFile)
+      if err != nil {
+        return cfg, err
+      }
+      fmt.Printf("[RESET] Successfully deleted and re-initialized %s\n", opts.ConfigFile)
+  }
+  return cfg, nil
 }
-

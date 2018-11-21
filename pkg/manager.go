@@ -7,16 +7,14 @@ import (
 
 type ContainerPackageManager struct {
   Version                 string
-  Registries              *RegistryList
+  Registries              []*Registry
   Store                   *store.GitStore
 }
 
 func NewContainerPackageManager(cfg *config.PackageManagerConfig) *ContainerPackageManager {
   return &ContainerPackageManager{
     Version:              cfg.Version,
-    Registries:           &RegistryList{
-      Registries:           make([]*Registry, 0),
-    },
+    Registries:           make([]*Registry, 0),
     Store:                store.NewGitStore(cfg.StoreConfig),
   }
 }
